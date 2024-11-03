@@ -1,0 +1,9 @@
+name: GitUpdater
+api-version: 1.13
+version: 1.0
+main: xyz.acrylicstyle.gitupdater.GitUpdater
+commands:
+  gitupdater:
+    description: GitUpdater command
+    usage: /<command>
+    permission: gitupdater.command
