@@ -1,5 +1,6 @@
 package xyz.acrylicstyle.gitupdater;
 
+import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabExecutor;
@@ -32,17 +33,20 @@ public class GitUpdaterCommand implements TabExecutor {
                 sender.sendMessage("§cRepository not found.");
                 return true;
             }
-            sender.sendMessage("§aUpdating " + repository + "...");
-            try {
-                String result = plugin.update(repository).toString();
-                sender.sendMessage("Update result:");
-                sender.sendMessage(result);
-            } catch (Exception e) {
-                sender.sendMessage("§cFailed to update " + repository + ".");
-                e.printStackTrace();
-                return true;
-            }
-            sender.sendMessage("§aUpdated " + repository + ".");
+            Bukkit.getScheduler().runTaskAsynchronously(plugin, () -> {
+                sender.sendMessage("§aUpdating " + repository + "...");
+                try {
+                    String result = plugin.update(repository).toString();
+                    sender.sendMessage("Update result:");
+                    sender.sendMessage(result);
+                } catch (Exception e) {
+                    sender.sendMessage("§cFailed to update " + repository + ".");
+                    e.printStackTrace();
+                    return;
+                }
+                sender.sendMessage("§aUpdated " + repository + ".");
+            });
+            return true;
         }
         return true;
     }
